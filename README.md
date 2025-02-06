@@ -69,4 +69,4 @@
 
 Импортируем окружение: 
 1. conda env update -n my_env --file ENV.yaml
-2. выполняем все ячейки в /src/test.ipynb или запускаем python main.py
+2. выполняем все ячейки в /src/test.ipynb или запускаем python /src/main.py
