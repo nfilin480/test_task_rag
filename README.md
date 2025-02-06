@@ -53,6 +53,8 @@
 
 ### RAG Система
 
+Все необходимые файлы:/src/
+
 #### Основные модули
 - **База знаний**: Chroma (Wikipedia, 100k случайных примеров)
 - **Embedder**: intfloat/multilingual-e5-large
