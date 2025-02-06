@@ -1,0 +1,3 @@
+chroma_db/  \
+*.csv \
+src/chroma_db/
