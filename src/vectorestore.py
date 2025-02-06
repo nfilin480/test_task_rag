@@ -156,30 +156,44 @@ class KnowledgeDatabase:
         except Exception as e:
             raise ValueError(f"Error loading database: {str(e)}")
 
-    def load_from_csv(self, csv_path: str, text_column: str) -> None:
+    def load_from_csv(self, data, text_column):
         """
-        Загрузка документов из CSV файла и создание векторной базы данных
-        
+        Загрузка документов из CSV файла или DataFrame и создание векторной базы данных
+
         Args:
-            csv_path (str): Путь к CSV файлу
+            data (Union[str, pd.DataFrame]): Путь к CSV файлу или pandas DataFrame
             text_column (str): Название столбца, содержащего текстовые данные
         """
         try:
-            # Загружаем CSV файл
-            df = pd.read_csv(csv_path)
-            
+            # Проверяем, является ли input DataFrame'ом или путём к файлу
+            if isinstance(data, pd.DataFrame):
+                df = data
+            else:
+                df = pd.read_csv(data)
+
             # Проверяем наличие указанного столбца
             if text_column not in df.columns:
-                raise ValueError(f"Column '{text_column}' not found in CSV file")
-            
-            # Извлекаем тексты из указанного столбца
-            documents = df[text_column].dropna().tolist()
-            
+                raise ValueError(f"Столбец {text_column} не найден в данных")
+
+            # Преобразуем данные в список документов
+            documents = [
+                Document(page_content=text) 
+                for text in df[text_column].fillna("").tolist()
+            ]
+
             # Создаем векторную базу данных
-            self.create_vector_store(documents)
+            self.db = Chroma.from_documents(
+                documents=documents,
+                embedding=self.embeddings,
+                persist_directory=self.persist_directory
+            )
             
+            # Сохраняем базу
+            self.db.persist()
+            print("База данных успешно создана и сохранена")
+
         except Exception as e:
-            print(f"Error loading CSV file: {str(e)}")
+            print(f"Ошибка при загрузке данных: {str(e)}")
             raise
 
     def search_documents(self, queries: Union[str, List[str]], k: int = 5) -> List[Dict[str, Any]]:

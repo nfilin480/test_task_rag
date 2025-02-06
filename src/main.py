@@ -10,7 +10,7 @@ from query_classifier import QueryClassifier
 from hybrid_searcher import HybridSearcher
 import numpy as np
 
-MODEL_PATH_CLASSIFIER = "../distilbert/checkpoint-705"
+MODEL_PATH_CLASSIFIER = "nfilin/distilbert_query_classification"
 MODEL_PATH_LLM = "Qwen/Qwen2.5-7B-Instruct-1M"
 MODEL_PATH_EMBEDDINGS = "intfloat/multilingual-e5-large"
 CHROMA_DB_PATH = "./chroma_db"
@@ -52,7 +52,7 @@ class RAGSystem:
         try:
             # Классификация запроса
             query_type = self.classifier.classify_with_threshold(query)
-            print(f"Класс запроса: {query_type}")
+            #print(f"Класс запроса: {query_type}")
 
             context = []
             
@@ -81,14 +81,14 @@ class RAGSystem:
                 # Используем найденные документы как контекст
                 context = [result['document'] for result in hybrid_results]
                 
-                # Выводим отладочную информацию
-                print("\nTop 3 results:")
-                for i, result in enumerate(hybrid_results, 1):
-                    print(f"\nResult {i}:")
-                    print(f"Combined score: {result['score']:.4f}")
-                    print(f"Semantic score: {result['semantic_score']:.4f}")
-                    print(f"BM25 score: {result['bm25_score']:.4f}")
-                    print(f"Document preview: {result['document'][:200]}...")
+                # # Выводим отладочную информацию
+                # print("\nTop 3 results:")
+                # for i, result in enumerate(hybrid_results, 1):
+                #     print(f"\nResult {i}:")
+                #     print(f"Combined score: {result['score']:.4f}")
+                #     print(f"Semantic score: {result['semantic_score']:.4f}")
+                #     print(f"BM25 score: {result['bm25_score']:.4f}")
+                #     print(f"Document preview: {result['document'][:200]}...")
                 
             # Генерация ответа с учетом типа запроса
             response = self.llm.generate_response(query, context)

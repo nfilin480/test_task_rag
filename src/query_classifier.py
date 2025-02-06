@@ -75,7 +75,7 @@ class QueryClassifier:
             
         return predicted_classes
     
-    def classify_with_threshold(self, text: str, threshold: float = 0.9) -> tuple[int, float]:
+    def classify_with_threshold(self, text: str, threshold: float = 0.85) -> tuple[int, float]:
         """
         Классифицирует текст с учетом порога вероятности.
         
