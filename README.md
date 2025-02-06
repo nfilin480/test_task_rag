@@ -31,6 +31,7 @@
 
 #### Результаты классификации (модель distilbert/distilbert-base-uncased, остальные модели показывали плюс минус такое же качество, но данная модель будет наиболее быстрая)
 (Модель скинул на HF - https://huggingface.co/nfilin/distilbert_query_classification)
+
 Базовые метрики:
 - Accuracy: 0.85
 - Precision: 0.89
